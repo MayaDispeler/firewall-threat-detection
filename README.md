@@ -1,63 +1,74 @@
-# Firewall Threat Detection
+# Firewall Threat Detection Project
 
-A lightweight, end-to-end pipeline for analysing firewall logs, detecting anomalies with machine-learning, and visualising insights via a Streamlit dashboard.
+Hello! So, what is this project? Simply put, firewall logs are huge, no? Millions of lines. Who will read all that? So we are just using some data science to do the hard work for us.
 
-## Quick Start
+---
 
-1. **Clone & create environment**
-   ```bash
-   git clone https://github.com/MayaDispeler/firewall-threat-detection.git
-   cd firewall-threat-detection
-   python -m venv env
-   # Windows
-   env\Scripts\activate
-   # macOS / Linux
-   source env/bin/activate
-   pip install -r requirements.txt
-   ```
-2. **Prepare data (optional)** – rebuild `data/combined_firewall.csv`
-   ```bash
-   python prepare_enriched_data.py
-   ```
-3. **Retrain model (optional)**
-   ```bash
-   jupyter notebook 02_model.ipynb  # run all cells
-   ```
-4. **Launch dashboard**
-   ```bash
-   streamlit run dashboard.py
-   ```
+### So, what and all have we done?
 
-## Deliverables
-| ID | Artefact | Location |
-|----|----------|----------|
-| I | **Approach documentation** – methodology, EDA summary, modelling, dashboard, future work | [`Approach.md`](Approach.md) |
-| II | **Code + Requirements** – scripts, notebooks, model weights, install/run instructions | root folder, `requirements.txt` |
-| III | **Evaluation metrics** – proxy labels vs anomaly output | section 5 in `Approach.md` & notebook output |
+*   **First, we understood the data (EDA):** We properly went through the logs to see what is the actual story. We found out which IPs are eating all the data, when traffic is maximum, and which websites are the main culprits.
+*   **Then, we built one small AI model:** We used a simple method called 'Isolation Forest'. Nothing fancy, boss. Just a smart way to find anything that looks a bit... off. The final model is sitting in `model.joblib`.
+*   **And, a dashboard to see everything:** We made a simple screen with Streamlit to show all the findings. You can see live what is being blocked, what is allowed, and filter for different times also.
+*   **Everything is inside:** All the code, notebooks, everything is in this folder only, so you can also run it.
 
-### Key Metrics (proxy evaluation)
+For the full story, all the nitty-gritty details are there in the **[`Approach.md`](Approach.md)** file. Please to check it.
+
+---
+
+### How to run this thing?
+
+Just follow these steps, it is very easy.
+
+1.  **First, get the code and set up the environment:**
+    ```bash
+    git clone https://github.com/MayaDispeler/firewall-threat-detection.git
+    cd firewall-threat-detection
+    python -m venv env
+
+    # For Windows people
+    env\Scripts\activate
+
+    # For Mac/Linux people
+    source env/bin/activate
+    ```
+
+2.  **Next, you have to install the packages:**
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+3.  **That's all! Just run the dashboard:**
+    ```bash
+    streamlit run dashboard.py
+    ```
+
+Simple, no? If you want to create the data file again or train the model again, all commands for that are given in `Approach.md`.
+
+---
+
+### But is the model any good?
+
+Good question. We did one small check. See, we don't have any data that is properly labelled as 'attack'. So we just made one assumption: if the firewall said `deny` or `drop`, it must be a bad thing.
+
 | Metric | Score |
 |--------|-------|
 | Precision | 0.15 |
 | Recall    | 1.00 |
 | F1-score  | 0.26 |
 
-High recall ensures nearly all suspicious events are captured; future iterations will focus on raising precision through richer features and model ensembles.
+Now, don't get worried by the low precision. The main thing to see is the **Recall is 1.00**. That means our model is catching *every single thing* the firewall thought was a problem. Yes, it is being a bit over-cautious and flagging some good things also, but better safe than sorry, no? We can always make it better later.
 
-## Repository Structure
+---
+
+### How the files are kept
+
 ```
-│  README.md
-│  Approach.md
-│  requirements.txt
-│  dashboard.py          ← Streamlit app
-│  prepare_enriched_data.py
-│  data_synthesis.py
-│  model.joblib / scaler.joblib
-│  01_data_eda.ipynb     ← Exploratory analysis
-│  02_model.ipynb        ← Model training & evaluation
-└─ data/
-   └─ combined_firewall.csv
+│  README.md                <-- This file only!
+│  Approach.md              <-- The full story is here
+│  requirements.txt         <-- All packages needed for install
+│  dashboard.py             <-- The main application
+│  ...and other required files
 ```
 
-## License
-MIT
+---
+*License: MIT*
