@@ -1,0 +1,22 @@
+# Ignore Python virtual environments
+env/
+.venv/
+venv/
+.ustvenv/
+
+# Ignore Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Ignore model and scaler files
+*.joblib
+
+# Ignore data files
+/data/
+
+# Ignore OS files
+.DS_Store
+Thumbs.db
+
+# Ignore pycache
+__pycache__/
+*.pyc 
