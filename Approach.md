@@ -11,8 +11,8 @@ So, our idea is to let data science do the difficult work:
 
 ## 2. The data we use
 * **Source:** [Internet Firewall Data Set (Kaggle)](https://www.kaggle.com/datasets/tunguz/internet-firewall-data-set)  
-* **Where it lives in this repo:** `data/combined_firewall.csv` (plus raw/intermediate files)  
-* **Extra features:** `data_synthesis.py` adds things like `total_traffic_bytes` and `hour_of_day`.
+* **Data saved in the path** `data/combined_firewall.csv` (plus raw/intermediate files)  
+* **Data Synthesis codebases:** `data_synthesis.py` adds things like `total_traffic_bytes` and `hour_of_day`.
 
 | Column | Meaning |
 |--------|---------|
