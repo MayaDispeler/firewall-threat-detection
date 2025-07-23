@@ -25,7 +25,7 @@ So, our idea is to let data science do the difficult work:
 ---
 
 ## 3. What we found in the data
-Full details are in the file (01_data_eda.ipynb), but the simple summary is:
+Full details are in the file (**`01_data_eda.ipynb`**), but the simple summary is:
 
 * Only some few IPs are using all the bandwidth. The traffic is not balanced. 
 * More than 80% of the blocked data is coming from less than 5% of the IPs. We can just block them straight away.
