@@ -1,4 +1,3 @@
-````markdown
 # Firewall Threat & Anomaly Detection – Project Overview
 
 ## 1. Why we’re doing this
@@ -84,57 +83,37 @@ What you can do with it:
 Run it with:
 ```bash
 streamlit run dashboard.py
-````
-
-### 📷 Dashboard screenshot
-
-*(Replace the image below with your own)*
-
-```html
-<!-- DASHBOARD_IMAGE_PLACEHOLDER -->
-<img src="path/to/your/dashboard_screenshot.png" alt="Dashboard preview" width="100%">
 ```
 
 ---
-
-## 7. Re‑creating everything on your machine
-
-### 7.1 Set up the environment
-
+## 7. Reproducing the Results
+### 7.1 Environment setup
 ```bash
 python -m venv env
-source env/bin/activate      # Windows: env\Scripts\activate
+source env/bin/activate  # Windows: env\Scripts\activate
 pip install -r requirements.txt
-# Add 'fpdf' if you want PDF export from the dashboard
 ```
+*Add `fpdf` if you plan to export PDFs from the dashboard.*
 
-### 7.2 Prepare the data
-
-Combine and enrich the raw Kaggle CSVs:
-
+### 7.2 Data preparation
+Raw Kaggle CSVs → combine/enrich → `combined_firewall.csv`:
 ```bash
-python prepare_enriched_data.py   # or run the notebook cells
+python prepare_enriched_data.py  # or run the notebook cells
 ```
-
-### 7.3 (Re)train the model – optional
-
+### 7.3 Model training (optional)
 ```bash
-jupyter notebook 02_model.ipynb   # run all cells
+jupyter notebook 02_model.ipynb  # run all cells to retrain & save artefacts
 ```
-
-### 7.4 Launch the dashboard
-
+### 7.4 Run the dashboard
 ```bash
 streamlit run dashboard.py
 ```
 
 ---
-
-## 8. Repo at a glance
-
+## 8. Repository Structure (key files)
 ```
-│  Approach.md            ← (this file)
-│  requirements.txt       ← dependencies
+│  Approach.md            ← **(this file)**
+│  requirements.txt       ← dependency list
 │  dashboard.py           ← Streamlit app
 │  prepare_enriched_data.py
 │  data_synthesis.py
@@ -142,21 +121,15 @@ streamlit run dashboard.py
 │  01_data_eda.ipynb
 │  02_model.ipynb
 └─ data/
-   └─ combined_firewall.csv
+   └─ combined_firewall.csv (processed dataset)
 ```
 
 ---
-
-## 9. Where we’re heading next
-
-* Bring in categorical features (one‑hot or embeddings).
-* Expose the model as a real‑time REST service (FastAPI).
-* Add Slack/email alerts when an anomaly score pops above a threshold.
-* Try other algorithms (AutoEncoder, One‑Class SVM) and maybe ensemble them.
+## 9. Future Improvements
+* Incorporate categorical features via one-hot encoding or embeddings.
+* Deploy model as a REST service (FastAPI) for real-time ingestion.
+* Add alerting (Slack/email) when anomaly score exceeds threshold.
+* Evaluate alternative algorithms (e.g. AutoEncoder, One-Class SVM) & ensemble their outputs.
 
 ---
-
-© 2025 – Firewall Threat Detection Project
-
-```
-```
+© 2025 – Firewall Threat Detection Project 
