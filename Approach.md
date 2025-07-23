@@ -62,7 +62,7 @@ For a simple evaluation, we are thinking like this: if the action is **`deny`** 
 | Recall | **1.00** |
 | F1 | **0.26** |
 
-The recall is high (1.00), which means we are catching almost all the bad things. For now, it is also flagging some good things as bad, but that is okay. Later, we will add more features to make the precision better.
+The recall is high (**1.00**), which means we are catching almost all the bad things. For now, it is also flagging some good things as bad, but that is okay. Later, we will add more features to make the precision better.
 
 The trained model saveds in **`model.joblib`**.
 
