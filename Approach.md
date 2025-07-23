@@ -1,115 +1,140 @@
-# Firewall Threat & Anomaly Detection – Approach Documentation
+````markdown
+# Firewall Threat & Anomaly Detection – Project Overview
 
-## 1. Problem Statement
-Modern firewalls generate millions of log lines every day.  Manually sifting through them is impractical.  The goal of this project is to leverage data-science techniques to:
+## 1. Why we’re doing this
+Firewalls throw off millions of log lines every single day. No human has time to read them all.  
+Our mission is to let data science do the heavy lifting:
 
-* perform **exploratory data analysis (EDA)** on the raw logs to uncover patterns & pain-points,
-* build an **AI-driven threat / anomaly detection model** that flags suspicious traffic in (near) real-time, and
-* serve the insights through a **simple dashboard** that security analysts can use to monitor incidents across multiple time-frames.
+* **Explore the raw logs** to spot patterns and pain‑points.  
+* **Detect threats and anomalies automatically** in (almost) real time.  
+* **Show the results in a simple dashboard** so analysts can focus on what matters.
 
 ---
-## 2. Data
-* **Source:** [Internet Firewall Data Set (Kaggle)](https://www.kaggle.com/datasets/tunguz/internet-firewall-data-set)
-* **Location in repo:** `data/combined_firewall.csv` (plus intermediate/raw files)
-* **Synthetic enrichment:** `data_synthesis.py` adds columns such as `total_traffic_bytes`, `hour_of_day`, etc. to better train the model.
 
-Key columns
+## 2. The data we use
+* **Source:** [Internet Firewall Data Set (Kaggle)](https://www.kaggle.com/datasets/tunguz/internet-firewall-data-set)  
+* **Where it lives in this repo:** `data/combined_firewall.csv` (plus raw/intermediate files)  
+* **Extra features:** `data_synthesis.py` adds things like `total_traffic_bytes` and `hour_of_day`.
+
 | Column | Meaning |
 |--------|---------|
-| `timestamp` | UTC-time of log entry |
+| `timestamp` | UTC time of the log entry |
 | `src_ip`, `dst_ip` | source / destination address |
 | `bytes_sent`, `bytes_received` | traffic volume |
-| `application`, `url_category` | higher-level context |
-| `action` | firewall decision (allow / deny / drop) |
+| `application`, `url_category` | higher‑level context |
+| `action` | what the firewall did (allow / deny / drop) |
 
 ---
-## 3. Exploratory Data Analysis (EDA)
-EDA was performed in **`01_data_eda.ipynb`**.  Highlights:
 
-* Traffic is highly **right-skewed**; a handful of IPs dominate bandwidth.
-* >80 % of dropped/denied packets originate from <5 % of source IPs ⇒ candidate block-list.
-* Traffic spikes follow an 8 AM–6 PM work-day pattern; off-hour spikes deserve inspection.
-* Certain URL categories ("Unknown", "Suspicious") coincide with `action = deny/drop` more than 6× the global rate.
+## 3. What we found in the data
+See **`01_data_eda.ipynb`** for the full walkthrough, but in short:
 
-Plots (see notebook): distribution histograms, hourly heat-map, bar charts of top applications & categories.
-
----
-## 4. Feature Engineering
-Minimal numeric feature set for the first iteration:
-
-1. `bytes_sent`
-2. `bytes_received`
-3. `total_traffic_bytes` = sent + received
-4. `hour_of_day` = `timestamp.hour`
-
-These are scaled using `StandardScaler` (saved as `scaler.joblib`).
+* A handful of IPs hog most of the bandwidth (right‑skewed traffic).  
+* Over 80 % of denied or dropped packets come from fewer than 5 % of source IPs – prime block‑list material.  
+* Traffic follows the 8 AM–6 PM workday; spikes outside those hours are suspicious.  
+* “Unknown” or “Suspicious” URL categories are denied/dropped more than six times the global rate.
 
 ---
-## 5. Modelling Approach
-Logs are **unlabelled** – we do not have ground-truth attack annotations.  Therefore an **unsupervised anomaly-detection algorithm** is appropriate.
 
-* **Algorithm:** Isolation Forest via [`pyod`](https://pyod.readthedocs.io/)
-* **Contamination:** 2 % (assumption: only a small fraction of traffic is malicious)
-* **Implementation:** see **`02_model.ipynb`**
+## 4. Features we feed the model
+First pass, we keep it simple:
 
-### Evaluation
-We use a **proxy label**: treat `action ∈ {deny, drop}` as *likely bad* (class = 1) and the rest as *benign* (class = 0).  Using this heuristic:
+1. `bytes_sent`  
+2. `bytes_received`  
+3. `total_traffic_bytes` (sent + received)  
+4. `hour_of_day` (from the timestamp)
+
+Everything is scaled with `StandardScaler` and saved to `scaler.joblib`.
+
+---
+
+## 5. How the model works
+Because the logs aren’t labelled, we lean on **unsupervised learning**.
+
+* **Algorithm:** Isolation Forest (via `pyod`)  
+* **Assumed threat rate (contamination):** 2 %  
+* **Notebook:** **`02_model.ipynb`**
+
+### Quick‑and‑dirty evaluation
+We treat `action` ∈ {deny, drop} as “probably bad” and the rest as “probably fine”:
 
 | Metric | Score |
 |--------|-------|
 | Precision | **0.15** |
-| Recall    | **1.00** |
-| F1-score  | **0.26** |
+| Recall | **1.00** |
+| F1 | **0.26** |
 
-*High recall* is desirable – we prefer catching everything at the expense of false positives.  Future work focuses on improving precision via additional features (e.g. protocol, port, rolling statistics).
+High recall means we catch (almost) everything, even if we flag too many false positives for now. Future work will raise precision with richer features.
 
-The fitted model is persisted to `model.joblib` for reuse by the dashboard / APIs.
+The trained model lives in `model.joblib`.
 
 ---
-## 6. Dashboard
-File: **`dashboard.py`** – powered by **Streamlit**.
 
-Features
-* Time-frame filter: *All*, *last 1 h*, *12 h*, *24 h*
-* Pie charts of traffic by application, URL category, source & destination IPs
-* Bar-chart time-series of total traffic
-* Tables of top users, categories
-* Action distribution (allow vs deny/drop)
+## 6. The dashboard
+File: **`dashboard.py`** (Streamlit)
 
-Launch with:
+What you can do with it:
+
+* Filter by time (all time, last hour, 12 h, 24 h)  
+* See pie charts for applications, URL categories, source and destination IPs  
+* View a bar‑chart time‑series of total traffic  
+* Scan tables of top users and categories  
+* Compare allow vs deny/drop actions
+
+Run it with:
 ```bash
 streamlit run dashboard.py
+````
+
+### 📷 Dashboard screenshot
+
+*(Replace the image below with your own)*
+
+```html
+<!-- DASHBOARD_IMAGE_PLACEHOLDER -->
+<img src="path/to/your/dashboard_screenshot.png" alt="Dashboard preview" width="100%">
 ```
 
 ---
-## 7. Reproducing the Results
-### 7.1 Environment setup
+
+## 7. Re‑creating everything on your machine
+
+### 7.1 Set up the environment
+
 ```bash
 python -m venv env
-source env/bin/activate  # Windows: env\Scripts\activate
+source env/bin/activate      # Windows: env\Scripts\activate
 pip install -r requirements.txt
+# Add 'fpdf' if you want PDF export from the dashboard
 ```
-*Add `fpdf` if you plan to export PDFs from the dashboard.*
 
-### 7.2 Data preparation
-Raw Kaggle CSVs → combine/enrich → `combined_firewall.csv`:
+### 7.2 Prepare the data
+
+Combine and enrich the raw Kaggle CSVs:
+
 ```bash
-python prepare_enriched_data.py  # or run the notebook cells
+python prepare_enriched_data.py   # or run the notebook cells
 ```
-### 7.3 Model training (optional)
+
+### 7.3 (Re)train the model – optional
+
 ```bash
-jupyter notebook 02_model.ipynb  # run all cells to retrain & save artefacts
+jupyter notebook 02_model.ipynb   # run all cells
 ```
-### 7.4 Run the dashboard
+
+### 7.4 Launch the dashboard
+
 ```bash
 streamlit run dashboard.py
 ```
 
 ---
-## 8. Repository Structure (key files)
+
+## 8. Repo at a glance
+
 ```
-│  Approach.md            ← **(this file)**
-│  requirements.txt       ← dependency list
+│  Approach.md            ← (this file)
+│  requirements.txt       ← dependencies
 │  dashboard.py           ← Streamlit app
 │  prepare_enriched_data.py
 │  data_synthesis.py
@@ -117,15 +142,21 @@ streamlit run dashboard.py
 │  01_data_eda.ipynb
 │  02_model.ipynb
 └─ data/
-   └─ combined_firewall.csv (processed dataset)
+   └─ combined_firewall.csv
 ```
 
 ---
-## 9. Future Improvements
-* Incorporate categorical features via one-hot encoding or embeddings.
-* Deploy model as a REST service (FastAPI) for real-time ingestion.
-* Add alerting (Slack/email) when anomaly score exceeds threshold.
-* Evaluate alternative algorithms (e.g. AutoEncoder, One-Class SVM) & ensemble their outputs.
+
+## 9. Where we’re heading next
+
+* Bring in categorical features (one‑hot or embeddings).
+* Expose the model as a real‑time REST service (FastAPI).
+* Add Slack/email alerts when an anomaly score pops above a threshold.
+* Try other algorithms (AutoEncoder, One‑Class SVM) and maybe ensemble them.
 
 ---
-© 2025 – Firewall Threat Detection Project 
+
+© 2025 – Firewall Threat Detection Project
+
+```
+```
