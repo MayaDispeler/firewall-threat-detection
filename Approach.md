@@ -84,25 +84,26 @@ Run it with:
 ```bash
 streamlit run dashboard.py
 ```
+<!-- DASHBOARD_IMAGE_PLACEHOLDER -->
+<img src="path/to/your/dashboard_screenshot.png" alt="Dashboard preview" width="100%">
 
 ---
 ## 7. Reproducing the Results
 ### 7.1 Environment setup
 ```bash
 python -m venv env
-source env/bin/activate  # Windows: env\Scripts\activate
+source env/bin/activate      # Windows: env\Scripts\activate
 pip install -r requirements.txt
 ```
-*Add `fpdf` if you plan to export PDFs from the dashboard.*
 
 ### 7.2 Data preparation
 Raw Kaggle CSVs → combine/enrich → `combined_firewall.csv`:
 ```bash
-python prepare_enriched_data.py  # or run the notebook cells
+python prepare_enriched_data.py
 ```
 ### 7.3 Model training (optional)
 ```bash
-jupyter notebook 02_model.ipynb  # run all cells to retrain & save artefacts
+jupyter notebook 02_model.ipynb
 ```
 ### 7.4 Run the dashboard
 ```bash
@@ -112,8 +113,8 @@ streamlit run dashboard.py
 ---
 ## 8. Repository Structure (key files)
 ```
-│  Approach.md            ← **(this file)**
-│  requirements.txt       ← dependency list
+│  Approach.md            ← (this file)
+│  requirements.txt       ← dependencies
 │  dashboard.py           ← Streamlit app
 │  prepare_enriched_data.py
 │  data_synthesis.py
@@ -121,15 +122,7 @@ streamlit run dashboard.py
 │  01_data_eda.ipynb
 │  02_model.ipynb
 └─ data/
-   └─ combined_firewall.csv (processed dataset)
+   └─ combined_firewall.csv
 ```
-
----
-## 9. Future Improvements
-* Incorporate categorical features via one-hot encoding or embeddings.
-* Deploy model as a REST service (FastAPI) for real-time ingestion.
-* Add alerting (Slack/email) when anomaly score exceeds threshold.
-* Evaluate alternative algorithms (e.g. AutoEncoder, One-Class SVM) & ensemble their outputs.
-
 ---
 © 2025 – Firewall Threat Detection Project 
