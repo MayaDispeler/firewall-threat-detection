@@ -42,7 +42,7 @@ First pass, we keep it simple:
 3. `total_traffic_bytes` (sent + received)  
 4. `hour_of_day` (from the timestamp)
 
-Everything is scaled with `StandardScaler` and saved to `scaler.joblib`.
+Scaling done with `StandardScaler` and saved to `scaler.joblib`.
 
 ---
 
