@@ -1,13 +1,12 @@
 # Firewall Threat & Anomaly Detection – Project Overview
 
 ## 1. Why we’re doing this
-Firewalls throw off millions of log lines every single day. No human has time to read them all.  
-Our mission is to let data science do the heavy lifting:
+Firewall is giving millions of log lines every single day. Who has time to read all that?  
+So, our idea is to let data science do the difficult work:
 
-* **Explore the raw logs** to spot patterns and pain‑points.  
-* **Detect threats and anomalies automatically** in (almost) real time.  
-* **Show the results in a simple dashboard** so analysts can focus on what matters.
-
+* Checking all the logs properly to find the pattern and problem points.  
+* Finding any danger or anything strange automatically, almost then and there.  
+* Showing everything on one simple screen, so our analysts can just see the main thing.
 ---
 
 ## 2. The data we use
