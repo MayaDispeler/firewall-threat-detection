@@ -85,7 +85,7 @@ Run it with:
 streamlit run dashboard.py
 ```
 <!-- DASHBOARD_IMAGE_PLACEHOLDER -->
-<img src="path/to/your/dashboard_screenshot.png" alt="Dashboard preview" width="100%">
+<img src="dashboard_screenshot.png" alt="Dashboard preview" width="100%">
 
 ---
 ## 7. Reproducing the Results
