@@ -47,14 +47,14 @@ Scaling done with `StandardScaler` and saved to `scaler.joblib`.
 ---
 
 ## 5. How the model works
-Because the logs aren’t labelled, we lean on **unsupervised learning**.
+Our logs are not having any labels like "**good**" or "**bad**". That's why we have to use unsupervised learning.
 
-* **Algorithm:** Isolation Forest (via `pyod`)  
-* **Assumed threat rate (contamination):** 2 %  
-* **Notebook:** **`02_model.ipynb`**
+* Algorithm we used: Isolation Forest (from pyod library)
+* How much threat we are expecting (contamination): We are assuming that about 2% of the traffic is bad.
+* Notebook file: **`02_model.ipynb`**
 
-### Quick‑and‑dirty evaluation
-We treat `action` ∈ {deny, drop} as “probably bad” and the rest as “probably fine”:
+### A Quick Check on Performance
+For a simple evaluation, we are thinking like this: if the action is **`deny`** or **`drop`**, it is probably a bad thing. Everything else is probably fine.
 
 | Metric | Score |
 |--------|-------|
@@ -62,24 +62,24 @@ We treat `action` ∈ {deny, drop} as “probably bad” and the rest as “pr
 | Recall | **1.00** |
 | F1 | **0.26** |
 
-High recall means we catch (almost) everything, even if we flag too many false positives for now. Future work will raise precision with richer features.
+The recall is high (1.00), which means we are catching almost all the bad things. For now, it is also flagging some good things as bad, but that is okay. Later, we will add more features to make the precision better.
 
-The trained model lives in `model.joblib`.
+The trained model saveds in **`model.joblib`**.
 
 ---
 
 ## 6. The dashboard
-File: **`dashboard.py`** (Streamlit)
+Code File: **`dashboard.py`** (Streamlit)
 
-What you can do with it:
+What and all you can do with it:
 
-* Filter by time (all time, last hour, 12 h, 24 h)  
-* See pie charts for applications, URL categories, source and destination IPs  
-* View a bar‑chart time‑series of total traffic  
-* Scan tables of top users and categories  
-* Compare allow vs deny/drop actions
+* You can filter the data by time (all time, last 1 hour, 12 hours, 24 hours).
+* You can see pie charts for applications, websites, source and destination IPs.
+* See a bar chart to know the total traffic over time.  
+* Check tables to find the top users and top website categories.
+* You can also compare which traffic is allowed and which is blocked.
 
-Run it with:
+To run it, just use this command:
 ```bash
 streamlit run dashboard.py
 ```
