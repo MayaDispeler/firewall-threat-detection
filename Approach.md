@@ -25,12 +25,12 @@ So, our idea is to let data science do the difficult work:
 ---
 
 ## 3. What we found in the data
-See **`01_data_eda.ipynb`** for the full walkthrough, but in short:
+Full details are in the file (01_data_eda.ipynb), but the simple summary is:
 
-* A handful of IPs hog most of the bandwidth (right‑skewed traffic).  
-* Over 80 % of denied or dropped packets come from fewer than 5 % of source IPs – prime block‑list material.  
-* Traffic follows the 8 AM–6 PM workday; spikes outside those hours are suspicious.  
-* “Unknown” or “Suspicious” URL categories are denied/dropped more than six times the global rate.
+* Only some few IPs are using all the bandwidth. The traffic is not balanced. 
+* More than 80% of the blocked data is coming from less than 5% of the IPs. We can just block them straight away.
+* Traffic is mostly high during office time, from 8 AM to 6 PM. If usage is high after that, something is suspicious.
+* Websites marked as “Unknown” or “Suspicious” are getting blocked 6 times more than any normal website.
 
 ---
 
