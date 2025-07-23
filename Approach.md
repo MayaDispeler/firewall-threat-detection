@@ -30,7 +30,7 @@ Full details are in the file (**`01_data_eda.ipynb`**), but the simple summary i
 * Only some few IPs are using all the bandwidth. The traffic is not balanced. 
 * More than 80% of the blocked data is coming from less than 5% of the IPs. We can just block them straight away.
 * Traffic is mostly high during office time, from 8 AM to 6 PM. If usage is high after that, something is suspicious.
-* Websites marked as “Unknown” or “Suspicious” are getting blocked 6 times more than any normal website.
+* Websites marked as “**Unknown**” or “**Suspicious**” are getting blocked 6 times more than any normal website.
 
 ---
 
